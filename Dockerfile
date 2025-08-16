@@ -21,5 +21,5 @@ EXPOSE 10000
 # CMD ["gunicorn", "-w", "1", "-k", "gthread", "-t", "120", "-b", "0.0.0.0:${PORT}", "server:app"]
 
 # стало:
-CMD ["sh", "-c", "gunicorn -w 1 -k gthread -t 120 -b 0.0.0.0:$PORT server:app"]
+CMD sh -c "gunicorn ... -b 0.0.0.0:$PORT server:app
 
