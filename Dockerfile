@@ -17,4 +17,9 @@ COPY server.py .
 ENV PORT=10000
 EXPOSE 10000
 
-CMD ["gunicorn", "-w", "1", "-k", "gthread", "-t", "120", "-b", "0.0.0.0:${PORT}", "server:app"]
+# было (не подставляет переменные):
+# CMD ["gunicorn", "-w", "1", "-k", "gthread", "-t", "120", "-b", "0.0.0.0:${PORT}", "server:app"]
+
+# стало:
+CMD ["sh", "-c", "gunicorn -w 1 -k gthread -t 120 -b 0.0.0.0:$PORT server:app"]
+
