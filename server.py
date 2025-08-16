@@ -52,16 +52,18 @@ def run_bot() -> None:
         return
     try:
         import asyncio
-
-        # 🔧 НАДЁЖНЫЙ СПОСОБ: создаём цикл через policy и назначаем его текущим
         policy = asyncio.get_event_loop_policy()
         loop = policy.new_event_loop()
         policy.set_event_loop(loop)
 
         application = build_app()
         log.info("Starting Telegram polling…")
-        # В PTB 20+ это синхронный вызов, который внутри использует асинхронный раннер
-        application.run_polling(allowed_updates=Update.ALL_TYPES, close_loop=False)
+        # 🚀 fix: отключаем работу с сигналами
+        application.run_polling(
+            allowed_updates=Update.ALL_TYPES,
+            close_loop=False,
+            stop_signals=None,   # <<< добавлено
+        )
     except Exception as e:
         log.exception("Bot crashed: %s", e)
 
