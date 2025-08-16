@@ -129,17 +129,19 @@ def build_app() -> Application:
     return application
 
 def run_bot() -> None:
-    """Запускаем polling (в окрем потоке)."""
+    """Запускаем polling (в отдельном потоке)."""
     if not BOT_TOKEN:
         log.error("BOT_TOKEN is empty; skip bot start.")
         return
     try:
+        import asyncio
+        asyncio.set_event_loop(asyncio.new_event_loop())  # 🔑 фиксим event loop
         application = build_app()
         log.info("Starting Telegram polling…")
-        # allowed_updates=Update.ALL_TYPES чтобы ловить любые апдейты
         application.run_polling(allowed_updates=Update.ALL_TYPES)
     except Exception as e:
         log.exception("Bot crashed: %s", e)
+
 
 
 # -----------------------------
